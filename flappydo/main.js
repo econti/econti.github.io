@@ -3,35 +3,36 @@ var game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
 
 // Creates a new 'main' state that wil contain the game
 var main_state = {
-
 	preload: function() {  
-	// Change the background color of the game
-	this.game.stage.backgroundColor = '#71c5cf';
+  	// Change the background color of the game
+  	this.game.stage.backgroundColor = '#71c5cf';
 
-	// Load the bird sprite
-	this.game.load.image('bird', 'assets/bird.png'); 
+  	// Load the bird sprite
+  	this.game.load.image('bird', 'assets/bird.png'); 
+    this.game.load.image('pipe', 'assets/pipe.png'); 
 	},
 
 	create: function() {  
-	// Display the bird on the screen
-	this.bird = this.game.add.sprite(175, 300, 'bird');
+  	// Display the bird on the screen
+  	this.bird = this.game.add.sprite(175, 300, 'bird');
+    this.pipe1 = this.game.add.sprite(50, 300, 'pipe');
+    this.pipe2 = this.game.add.sprite(180, 300, 'pipe');
+    this.pipe3 = this.game.add.sprite(260, 300, 'pipe');
+  	// Add gravity to the bird to make it fall
+  	this.bird.body.gravity.y = 1000;  
 
-	// Add gravity to the bird to make it fall
-	this.bird.body.gravity.y = 1000;  
-
-	// Call the 'jump' function when the spacekey is hit
-	var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-	space_key.onDown.add(this.jump, this);     
+  	// Call the 'jump' function when the spacekey is hit
+  	var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  	space_key.onDown.add(this.jump, this);     
 	},
 
 	update: function() {  
-	// If the bird is out of the world (too high or too low), call the 'restart_game' function
-	if (this.bird.inWorld == false)
-	    this.restart_game();
+  	// If the bird is out of the world (too high or too low), call the 'restart_game' function
+  	if (this.bird.inWorld == false) this.restart_game();
 	},
 	jump: function() {  
     // Add a vertical velocity to the bird
-    	 this.bird.body.velocity.y = -350;
+    this.bird.body.velocity.y = -350;
 	},
 
 // Restart the game
