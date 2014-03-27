@@ -52,12 +52,12 @@
             var x = i*settings.width;
             var y = j*settings.height;
             var beenClicked = [0, false];
-                        
+
             for (var k = 0; k<clickedBoxes.length; k++) {
               if (i==clickedBoxes[k][0] && j==clickedBoxes[k][1]) {
                 beenClicked = [k, true];
               }
-            };
+            }
 
             if (beenClicked[1]==true){
               if (clickedBoxes[(beenClicked[0])][2] > 0){
@@ -70,6 +70,13 @@
             else {
               c.drawImage(box, x, y);
             }
+        }
+      }
+
+      for (i in clickedBoxes){
+        if (clickedBoxes[i][2] > 0){
+          c.font = "20px arial";
+          c.fillText(clickedBoxes[i][2], clickedBoxes[i][0]*settings.width + 10 , clickedBoxes[i][1]*settings.height + 21)
         }
       }
     }
@@ -93,6 +100,7 @@
       for (var i = 0; i < bombs.length;i++){
         if (xTile==bombs[i][0] && yTile==bombs[i][1]){
           clickedBomb == true;
+          window.alert("u got blown up");
         }
       }
 
