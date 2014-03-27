@@ -1,1 +1,155 @@
-hello
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body{
+      margin:0;
+    }
+  </style>
+  <script>
+
+    //global vars
+    var c; //canvas
+    var box; //normal tile
+    var zero; //tile with no surrounding bombs
+    var num;  //tile with a few bombs around it 
+    var numBombs = 10; //number of bombs
+    var bombs = []; //array of bomb locations 
+    var clickedBoxes = []; //array of clicked boxes
+
+    var settings = {
+      rows: 10,
+      cols: 10,
+      width: 30,
+      height: 30
+    };
+
+    window.onload = function(){
+      var canvas = document.getElementById("gCanvas");
+      c = canvas.getContext("2d");
+      init();
+    }
+
+    function init(){
+      box = new Image();
+      box.src = "assets/box.png"
+      zero = new Image();
+      zero.src = "assets/zero.png"
+      num = new Image();
+      num.src = "assets/num.png"
+
+      for (var i = 0; i < numBombs; i++) {
+        bombs[i] = [Math.floor(Math.random()*10), Math.floor(Math.random()*10)];
+      };
+      console.log(bombs);
+      drawCanvas();
+    }
+
+    function drawCanvas(){
+      c.clearRect(0,0,400,400);
+      for (var i = 0; i < settings.rows; i++) {
+         for (var j = 0; j < settings.cols; j++) {
+            var x = i*settings.width;
+            var y = j*settings.height;
+            var beenClicked = [0, false];
+                        
+            for (var k = 0; k<clickedBoxes.length; k++) {
+              if (i==clickedBoxes[k][0] && j==clickedBoxes[k][1]) {
+                beenClicked = [k, true];
+              }
+            };
+
+            if (beenClicked[1]==true){
+              if (clickedBoxes[(beenClicked[0])][2] > 0){
+                c.drawImage(num, x, y);
+              }
+              else {
+                c.drawImage(zero, x, y);
+              }
+            }
+            else {
+              c.drawImage(box, x, y);
+            }
+        }
+      }
+    }
+
+    var xPos;
+    var yPos;
+    var xTile;
+    var yTile;
+
+    window.onclick = function(e){
+      xPos = e.pageX;
+      yPos = e.pageY;
+
+      if (Math.floor(xPos/settings.width) < settings.cols && Math.floor(yPos/settings.height) < settings.height){
+        xTile = Math.floor(xPos/settings.width);
+        yTile = Math.floor(yPos/settings.height);
+        console.log(xTile + "," + yTile);
+      }
+
+      var clickedBomb = false;
+      for (var i = 0; i < bombs.length;i++){
+        if (xTile==bombs[i][0] && yTile==bombs[i][1]){
+          clickedBomb == true;
+        }
+      }
+
+      if(clickedBomb==false){
+        safeClick();
+      }
+    }
+
+    function lose(){
+    }
+
+    function  safeClick(){
+      var boxesToCheck = [
+        [-1,-1],
+        [0,-1],
+        [1,-1],
+        [-1,0],
+        [1,0],
+        [-1,1],
+        [0,1],
+        [1,1]
+      ];
+
+      var numBombsAround = 0;
+
+      for (var i in boxesToCheck) { 
+        for (var n = 0; n<bombs.length; n++) {
+          if(checkBomb(n, xTile + boxesToCheck[i][0], yTile + boxesToCheck[i][1])==true){
+            numBombsAround++;
+          }
+        }
+      }
+      clickedBoxes[clickedBoxes.length] = [xTile, yTile, numBombsAround];
+      drawCanvas();
+    }
+
+    function checkBomb (i,x,y) {
+      if (bombs[i][0]==x && bombs[i][1]==y){
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+  </script>
+</head>
+
+<body>
+
+  <div id="game">
+    <canvas id="gCanvas" width="400" height="400">
+    </canvas>
+  </div>
+   <div id="controls">
+  </div>
+
+</body>
+
+</html>
