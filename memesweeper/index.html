@@ -7,12 +7,17 @@
     }
   </style>
   <script>
-
+    window.onload = function(){
+      var canvas = document.getElementById("gCanvas");
+      c = canvas.getContext("2d");
+      timer();
+      init();
+    }
     //global vars
     var c; //canvas
     var box; //normal tile
+    var flag;
     var zero; //tile with no surrounding bombs
-    var num;  //tile with a few bombs around it 
     var numBombs = 10; //number of bombs
     var bombs = []; //array of bomb locations 
     var clickedBoxes = []; //array of clicked boxes
@@ -24,25 +29,29 @@
       height: 30
     };
 
-    window.onload = function(){
-      var canvas = document.getElementById("gCanvas");
-      c = canvas.getContext("2d");
-      init();
-    }
-
     function init(){
       box = new Image();
       box.src = "assets/box.png"
       zero = new Image();
       zero.src = "assets/zero.png"
-      num = new Image();
-      num.src = "assets/num.png"
-
+      bomb = new Image();
+      bomb.src = "assets/bomb.png"
+      flag = new Image();
+      flag.src = "assets/flag.png"
       for (var i = 0; i < numBombs; i++) {
         bombs[i] = [Math.floor(Math.random()*10), Math.floor(Math.random()*10)];
       };
-      console.log(bombs);
       drawCanvas();
+    }
+
+    var time = 0; 
+    function timer(){
+      setTimeout(function(){
+        var timerDiv = document.getElementById("timer");
+        time = time + 1;
+        timerDiv.innerHTML = time + " s";
+        timer();
+      },1000);
     }
 
     function drawCanvas(){
@@ -61,14 +70,27 @@
 
             if (beenClicked[1]==true){
               if (clickedBoxes[(beenClicked[0])][2] > 0){
-                c.drawImage(num, x, y);
+                c.drawImage(zero, x, y);
               }
               else {
                 c.drawImage(zero, x, y);
               }
             }
             else {
-              c.drawImage(box, x, y);
+              var rightBeenClicked = [0, false];
+              if (rightClickedBoxes.length > 0) {
+                for (var k in rightClickedBoxes) {
+                  if (i==rightClickedBoxes[k][0] && j==rightClickedBoxes[k][1]) {
+                    rightBeenClicked = [k, true];
+                  }
+                }
+              }
+              if (rightBeenClicked[1]==true) {
+                c.drawImage(flag, x, y);
+              }
+              else{
+                c.drawImage(box, x, y);
+              } 
             }
         }
       }
@@ -79,6 +101,7 @@
           c.fillText(clickedBoxes[i][2], clickedBoxes[i][0]*settings.width + 10 , clickedBoxes[i][1]*settings.height + 21)
         }
       }
+
     }
 
     var xPos;
@@ -93,26 +116,72 @@
       if (Math.floor(xPos/settings.width) < settings.cols && Math.floor(yPos/settings.height) < settings.height){
         xTile = Math.floor(xPos/settings.width);
         yTile = Math.floor(yPos/settings.height);
-        console.log(xTile + "," + yTile);
       }
 
       var clickedBomb = false;
       for (var i = 0; i < bombs.length;i++){
         if (xTile==bombs[i][0] && yTile==bombs[i][1]){
           clickedBomb == true;
-          window.alert("u got blown up");
+          revealBombs();
+          window.alert("u lose!");
         }
       }
 
-      if(clickedBomb==false){
-        safeClick();
+      if(clickedBomb==false && xPos < settings.rows*settings.width && yPos < settings.cols*settings.height){
+        safeClick(xTile, yTile);
       }
+    }
+
+    var xRightClick;
+    var yRightClick;
+    var rightClickedBoxes = [];
+    var inrightClickedBoxes = [0,false];
+
+    window.oncontextmenu = function(e){
+      e.preventDefault();
+      xPos = e.pageX;
+      yPos = e.pageY;
+
+      if (Math.floor(xPos/settings.width) < settings.cols && Math.floor(yPos/settings.height) < settings.height){
+        xRightClick = Math.floor(xPos/settings.width);
+        yRightClick = Math.floor(yPos/settings.height);
+      }
+
+      for (i in rightClickedBoxes){
+        if (rightClickedBoxes[i][0] == xRightClick && rightClickedBoxes[i][1] == yRightClick){
+          inrightClickedBoxes = [i, true];
+        }
+      }
+
+      if (inrightClickedBoxes[1]==false){
+        var n = rightClickedBoxes.length;
+        rightClickedBoxes[n] = [];
+        rightClickedBoxes[n][0] = xRightClick;
+        rightClickedBoxes[n][1] = yRightClick;
+      }
+      else {
+        rightClickedBoxes.splice(inrightClickedBoxes[0],1);
+      }
+      drawCanvas();
     }
 
     function lose(){
     }
 
-    function  safeClick(){
+    function newGame() {
+      bombs = [];
+      clickedBoxes = [];
+      rightClickedBoxes = [];
+      inrightClickedBoxes = [0,false]
+      xPos;
+      yPos;
+      xTile;
+      yTile;
+      time = 0;
+      init();
+    }
+
+    function  safeClick(x, y){
       var boxesToCheck = [
         [-1,-1],
         [0,-1],
@@ -128,12 +197,34 @@
 
       for (var i in boxesToCheck) { 
         for (var n = 0; n<bombs.length; n++) {
-          if(checkBomb(n, xTile + boxesToCheck[i][0], yTile + boxesToCheck[i][1])==true){
+          if(checkBomb(n, x + boxesToCheck[i][0], y + boxesToCheck[i][1])==true){
             numBombsAround++;
           }
         }
       }
-      clickedBoxes[clickedBoxes.length] = [xTile, yTile, numBombsAround];
+      clickedBoxes[clickedBoxes.length] = [x, y, numBombsAround];
+
+      if (numBombsAround==0){
+        for (var j in boxesToCheck) {
+          if(x + boxesToCheck[j][0] >= 0 && x + boxesToCheck[j][0] < settings.rows && y + boxesToCheck[j][1] >= 0 && y + boxesToCheck[j][1] < settings.cols){
+              var x1 = x + boxesToCheck[j][0];
+              var y1 = y + boxesToCheck[j][1];
+
+              var alreadyClicked = false;
+
+              for (n in clickedBoxes) {
+                if (clickedBoxes[n][0] == x1 && clickedBoxes[n][1] == y1) {
+                  alreadyClicked = true;
+                }
+              }
+
+              if (alreadyClicked == false) {
+                safeClick(x1, y1);
+              }
+          }
+        }
+      }
+
       drawCanvas();
     }
 
@@ -143,6 +234,12 @@
       }
       else {
         return false;
+      }
+    }
+
+    function revealBombs(){
+      for (i in bombs){
+        c.drawImage(bomb, bombs[i][0]*settings.width, bombs[i][1]*settings.height);
       }
     }
 
@@ -156,6 +253,12 @@
     </canvas>
   </div>
    <div id="controls">
+    <div id="timer">
+      0 <span></span>
+    </div>
+    <div id="new" onclick="newGame();">
+      New game!
+    </div>
   </div>
 
 </body>
