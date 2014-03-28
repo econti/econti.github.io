@@ -21,6 +21,7 @@
     var numBombs = 10; //number of bombs
     var bombs = []; //array of bomb locations 
     var clickedBoxes = []; //array of clicked boxes
+    var locations = [];
 
     var settings = {
       rows: 10,
@@ -38,8 +39,18 @@
       bomb.src = "assets/bomb.png"
       flag = new Image();
       flag.src = "assets/flag.png"
+
+       //list of possible locations
+      for (var i = 0; i < settings.rows; i++) {
+       for (var j = 0; j < settings.cols; j++) {
+          locations[locations.length] = [i,j];
+        }; 
+      }; 
+
+      locations = shuffle(locations);
+
       for (var i = 0; i < numBombs; i++) {
-        bombs[i] = [Math.floor(Math.random()*10), Math.floor(Math.random()*10)];
+        bombs[i] = locations[i];
       };
       drawCanvas();
     }
@@ -124,10 +135,16 @@
           clickedBomb == true;
           revealBombs();
           window.alert("u lose!");
+
         }
       }
 
       if(clickedBomb==false && xPos < settings.rows*settings.width && yPos < settings.cols*settings.height){
+          var totalClicked = numFlags + clickedBoxes.length;
+          console.log(totalClicked);
+          if (totalClicked>=99){
+            win();
+          }
         safeClick(xTile, yTile);
       }
     }
@@ -136,6 +153,7 @@
     var yRightClick;
     var rightClickedBoxes = [];
     var inrightClickedBoxes = [0,false];
+    var numFlags = 0;
 
     window.oncontextmenu = function(e){
       e.preventDefault();
@@ -147,22 +165,43 @@
         yRightClick = Math.floor(yPos/settings.height);
       }
 
-      for (i in rightClickedBoxes){
-        if (rightClickedBoxes[i][0] == xRightClick && rightClickedBoxes[i][1] == yRightClick){
-          inrightClickedBoxes = [i, true];
+      if (rightClickedBoxes.length > 0) {
+        for (i in rightClickedBoxes) {
+          if (rightClickedBoxes[i][0] == xRightClick && rightClickedBoxes[i][1] == yRightClick){
+            inrightClickedBoxes = [i, true];
+            break;
+          }
+          else{
+            inrightClickedBoxes = [i, false];
+          }
         }
       }
-
-      if (inrightClickedBoxes[1]==false){
-        var n = rightClickedBoxes.length;
-        rightClickedBoxes[n] = [];
-        rightClickedBoxes[n][0] = xRightClick;
-        rightClickedBoxes[n][1] = yRightClick;
-      }
       else {
+        inrightClickedBoxes[1] = false;
+      }
+      if (inrightClickedBoxes[1]==false){
+        if (numFlags<numBombs){
+          var n = rightClickedBoxes.length;
+          rightClickedBoxes[n] = [];
+          rightClickedBoxes[n][0] = xRightClick;
+          rightClickedBoxes[n][1] = yRightClick;
+          numFlags++;
+          var totalClicked = numFlags + clickedBoxes.length;
+          console.log(totalClicked);
+          if (totalClicked>=99){
+            win();
+          }
+        }  
+      }
+      else{
         rightClickedBoxes.splice(inrightClickedBoxes[0],1);
+        numFlags--;
       }
       drawCanvas();
+    }
+
+    function win(){
+      console.log("you win")
     }
 
     function lose(){
@@ -242,6 +281,11 @@
         c.drawImage(bomb, bombs[i][0]*settings.width, bombs[i][1]*settings.height);
       }
     }
+
+    function shuffle(o){ //v1.0
+      for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+      return o;
+    };
 
   </script>
 </head>
