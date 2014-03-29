@@ -49,7 +49,6 @@ var main_state = {
     this.boing.play();  
     this.rocket2.body.velocity.y = -200;
     this.rocket2.body.gravity.y = 2600;
-    leftclicks++;
   },
   bump: function() {  
     this.boing.play();  
