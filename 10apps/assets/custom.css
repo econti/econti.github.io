@@ -120,9 +120,16 @@
 .timeline-badge.success {
     background-color: #3f903f !important;
 }
+.timeline-badge.tweet {
+    background-color: #4096EE !important;
+}
 
 .timeline-badge.warning {
     background-color: #f0ad4e !important;
+}
+
+.timeline-badge.hotel {
+    background-color: #CC0000 !important;
 }
 
 .timeline-badge.danger {
