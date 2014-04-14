@@ -1,3 +1,6 @@
+.roundrect {
+border-radius: 15px;
+}
 
 .timeline {
     list-style: none;
