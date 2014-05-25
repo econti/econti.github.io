@@ -127,6 +127,14 @@ border-radius: 15px;
     background-color: #4096EE !important;
 }
 
+.timeline-badge.fb {
+    background-color: #00008B !important;
+}
+
+.timeline-badge.git {
+    background-color: #708090 !important;
+}
+
 .timeline-badge.warning {
     background-color: #f0ad4e !important;
 }
