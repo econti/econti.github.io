@@ -79,16 +79,16 @@ button.navbar-toggle {
 }
 
 .btn-theme,.btn-theme:hover,.btn-theme:focus{
-	color: black;
-	background-color: white !important;
-  	border-color: white;
+	color: white;
+	background-color: #1CB78C !important;
+  	border-color: #1CB78C;
   	padding-top: 2rem;
   	padding-bottom: 2rem;
   	padding-left: 5rem;
   	padding-right: 5rem;
 }
 .btn-theme:hover{
-	opacity: 0.8;
+	color: black;
 }
 
 
@@ -203,15 +203,13 @@ Intro
     height:500px;
     width:100%;
     background-color: #529abb;
-    background-image: url(../img/spacer/office.jpg);
+    background-image: url(http://i.imgur.com/UdDRzhj.jpg);
     background-position:center;
     background-repeat:no-repeat;
     overflow-y:hidden;
     text-align:center;
     position:relative;
 }
-
-
 
 .intro-text {
 	position:relative;
