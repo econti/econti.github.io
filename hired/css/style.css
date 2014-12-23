@@ -20,7 +20,7 @@ body{
 	
 }
 .company_name {
-	color: white;
+	color: black;
 }
 h1 {
 	font-size: 70px;
@@ -43,7 +43,7 @@ h6 {
 
 h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
 	color: #3a3a3a;
-	font-weight: 700;
+	font-weight: 300;
 	margin-bottom: 0px;
 	font-family: 'Montserrat', sans-serif;
 }
@@ -200,10 +200,10 @@ Intro
 ================================= */
 
 #intro{
-    height:500px;
+    height:100%;
     width:100%;
     background-color: #529abb;
-    background-image: url(http://i.imgur.com/UdDRzhj.jpg);
+    background-image: url(http://i.imgur.com/dRvGq78.jpg);
     background-position:center;
     background-repeat:no-repeat;
     overflow-y:hidden;
@@ -238,14 +238,14 @@ Intro
 	margin:0 auto;
 	margin-top: 20px;
 	margin-bottom: 25px;
-	border-bottom:1px solid #fff;
+	border-bottom:1px solid black;
 }
 
 .intro-text p span {
-	color:#fff;
+	color:black;
 	font-size: 24px;
 	text-align:center;
-	font-weight: 300;
+	font-weight: 400;
 }
 
 /* ================================
