@@ -19,9 +19,11 @@ body{
 	line-height: 1.6em;
 	
 }
-
+.company_name {
+	color: black;
+}
 h1 {
-	font-size: 36px;
+	font-size: 70px;
 }
 h2 {
 	font-size: 32px;
@@ -41,8 +43,8 @@ h6 {
 
 h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
 	color: #3a3a3a;
-	font-weight: 700;
-	margin-bottom: 20px;
+	font-weight: 300;
+	margin-bottom: 0px;
 	font-family: 'Montserrat', sans-serif;
 }
 
@@ -77,12 +79,16 @@ button.navbar-toggle {
 }
 
 .btn-theme,.btn-theme:hover,.btn-theme:focus{
-	color: #fff;
+	color: white;
+	background-color: #1CB78C !important;
+  	border-color: #1CB78C;
+  	padding-top: 2rem;
+  	padding-bottom: 2rem;
+  	padding-left: 5rem;
+  	padding-right: 5rem;
 }
 .btn-theme:hover{
-	background: transparent !important;
-	border-color: #999;
-	color: #999;
+	color: black;
 }
 
 
@@ -106,6 +112,19 @@ margin, padding
 }
 
 
+/* ================================
+nav
+================================= */
+.navbar-inverse {
+    background-color: #2c3539;
+    border-color: #2c3539;
+	font-size: 12px;
+}
+.navbar-inverse .navbar-brand {
+	color: white;
+}
+
+
 
 /* ================================
 Home sections
@@ -113,7 +132,7 @@ Home sections
 
 .home-section {
 	width: 100%;
-	padding: 90px 0px 150px 0px;
+	padding: 40px 0px 150px 0px;
 }
 
 /* --- heading --- */
@@ -181,10 +200,10 @@ Intro
 ================================= */
 
 #intro{
-    height:635px;
+    height:100%;
     width:100%;
     background-color: #529abb;
-    background-image: url(../img/bg-mac.png);
+    background-image: url(http://i.imgur.com/dRvGq78.jpg);
     background-position:center;
     background-repeat:no-repeat;
     overflow-y:hidden;
@@ -192,16 +211,14 @@ Intro
     position:relative;
 }
 
-
-
 .intro-text {
 	position:relative;
 	width:100%;
-	margin-top:200px;
+	margin-top:65px;
 	z-index:1000;
 }
 #intro .brand {
-	margin-top: 40px;
+	margin-top: 20px;
 }
 .intro-text h1 a {
 	color:#fff;
@@ -221,14 +238,14 @@ Intro
 	margin:0 auto;
 	margin-top: 20px;
 	margin-bottom: 25px;
-	border-bottom:1px solid #fff;
+	border-bottom:1px solid black;
 }
 
 .intro-text p span {
-	color:#fff;
+	color:black;
 	font-size: 24px;
 	text-align:center;
-	font-weight: 300;
+	font-weight: 400;
 }
 
 /* ================================
@@ -547,7 +564,7 @@ more media queries
 
 @media (max-width:768px) {
 	#intro{
-		background-image: url(../img/bg-mac.png);
+		background-image: none;
 		background-size:100%;
 	}
 	.box-team, .box-team img {
